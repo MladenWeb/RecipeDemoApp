@@ -2,7 +2,18 @@ import { useRecipeStore } from "@/store/store";
 import styles from "./recipe.module.css";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { Recipe } from "@/app/models/RecipeModel";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Recipe } from "@/app/types";
+
+const schema = z.object({
+  recipe_name: z
+    .string()
+    .min(2, { message: "Recipe name must have minimum 2 characters" }),
+  description: z
+    .string()
+    .min(2, { message: "Description must have minimum 2 characters." }),
+});
 
 export default function RecipeModal({
   show,
@@ -13,7 +24,8 @@ export default function RecipeModal({
 }) {
   const [loading, setLoading] = useState(false);
   const addrecipe = useRecipeStore((state: any) => state?.addRecipe);
-  const form = useForm<Recipe>();
+
+  const form = useForm<Recipe>({ resolver: zodResolver(schema) });
   const { register, handleSubmit, formState, reset, clearErrors } = form;
   const { errors } = formState;
   const formSubmit = (data: Recipe) => {
@@ -49,9 +61,7 @@ export default function RecipeModal({
                   className={styles.input_style}
                   type="text"
                   id="recipe_name"
-                  {...register("recipe_name", {
-                    required: "Recipe name is required",
-                  })}
+                  {...register("recipe_name")}
                 />
                 <span className={styles.error}>
                   {errors.recipe_name?.message}
@@ -65,9 +75,7 @@ export default function RecipeModal({
                   className={styles.input_style}
                   style={{ height: "4rem", padding: "0.7rem" }}
                   id="ingredient_name"
-                  {...register("description", {
-                    required: "Description is required",
-                  })}
+                  {...register("description")}
                 />
                 <span className={styles.error}>
                   {errors.description?.message}

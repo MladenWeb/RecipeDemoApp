@@ -2,16 +2,18 @@
 import RecipeModal from "@/components/recipe-modal/RecipeModal";
 import { useRecipeStore } from "@/store/store";
 import { useState } from "react";
-import { Recipe } from "../models/RecipeModel";
 import { Cart } from "@/components/cart/Cart";
+import { Recipe } from "../types";
 
-export default function CreateRecipe() {
+export default function CreateRecipePage() {
   const [search, setSearch] = useState("");
   const [showModal, setModalStatus] = useState(false);
-  const recipes = useRecipeStore((state: any) => state?.recipes);
-  const searchRecipe = useRecipeStore((state: any) => state?.searchRecipe);
+  const recipes = useRecipeStore((state: any) => state.recipes);
+  const searchRecipe = useRecipeStore((state: any) => state.searchRecipe);
 
-  const searchForRecipe = (event: any) => {
+  const searchForRecipe = (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
     setSearch(event.target.value);
     searchRecipe(event.target.value);
   };

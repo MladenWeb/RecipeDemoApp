@@ -1,11 +1,25 @@
 "use client";
-import { Recipe } from "@/app/models/RecipeModel";
 import { useRecipeStore } from "@/store/store";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Recipe } from "@/app/types";
 
-export function Cart({ recipe, index }: { recipe: Recipe; index: any }) {
-  const form = useForm<Recipe>({ defaultValues: recipe });
+const schema = z.object({
+  recipe_name: z
+    .string()
+    .min(2, { message: "Recipe name must have minimum 2 characters" }),
+  description: z
+    .string()
+    .min(2, { message: "Description must have minimum 2 characters." }),
+});
+
+export function Cart({ recipe, index }: { recipe: Recipe; index: number }) {
+  const form = useForm<Recipe>({
+    defaultValues: recipe,
+    resolver: zodResolver(schema),
+  });
   const { register, handleSubmit, formState, setValue, clearErrors } = form;
   const [edit, setEdit] = useState(false);
   const removeRecipe = useRecipeStore((state: any) => state.deleteRecipe);
@@ -60,9 +74,7 @@ export function Cart({ recipe, index }: { recipe: Recipe; index: any }) {
                 placeholder="Enter recipe name..."
                 type="text"
                 id="recipe_name"
-                {...register("recipe_name", {
-                  required: "Recipe name is required",
-                })}
+                {...register("recipe_name")}
               />
               <span style={{ color: "red", fontSize: "12px" }}>
                 {errors.recipe_name?.message}
@@ -75,9 +87,7 @@ export function Cart({ recipe, index }: { recipe: Recipe; index: any }) {
                 placeholder="Enter description..."
                 style={{ height: "4rem", padding: "0.7rem" }}
                 id="ingredient_name"
-                {...register("description", {
-                  required: "Description is required",
-                })}
+                {...register("description")}
               />
               <span style={{ color: "red", fontSize: "12px" }}>
                 {errors.description?.message}

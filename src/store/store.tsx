@@ -1,18 +1,10 @@
-import { Recipe } from "@/app/models/RecipeModel";
+import { Recipe, RecipeState } from "@/app/types";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-type RecipeState = {
-  recipes: Recipe[];
-  originalRecipes: Recipe[];
-  addRecipe: (data: Recipe) => void;
-  deleteRecipe: (data: Recipe) => void;
-  searchRecipe: (data: string) => void;
-};
-
 export const useRecipeStore = create(
   persist(
-    (set, get) => ({
+    (set) => ({
       recipes: [],
       originalRecipes: [],
       addRecipe: (newRecipe: Recipe) =>
@@ -38,7 +30,8 @@ export const useRecipeStore = create(
       deleteRecipe: (recipe: Recipe) =>
         set((state: RecipeState) => ({
           recipes: state.recipes.filter(
-            (r: Recipe, index: any) => index !== state.recipes.indexOf(recipe)
+            (r: Recipe, index: number) =>
+              index !== state.recipes.indexOf(recipe)
           ),
           originalRecipes: state.originalRecipes.filter(
             (r: Recipe, index) => index !== state.recipes.indexOf(recipe)
