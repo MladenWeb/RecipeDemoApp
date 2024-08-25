@@ -3,13 +3,15 @@ import RecipeModal from "@/components/recipe-modal/RecipeModal";
 import { useRecipeStore } from "@/store/store";
 import { useState } from "react";
 import { Cart } from "@/components/cart/Cart";
-import { Recipe } from "../types";
+import { Recipe, RecipeState } from "../types";
 
 export default function CreateRecipePage() {
   const [search, setSearch] = useState("");
   const [showModal, setModalStatus] = useState(false);
-  const recipes = useRecipeStore((state: any) => state.recipes);
-  const searchRecipe = useRecipeStore((state: any) => state.searchRecipe);
+  const recipes = useRecipeStore((state: RecipeState) => state.recipes);
+  const searchRecipe = useRecipeStore(
+    (state: RecipeState) => state.searchRecipe
+  );
 
   const searchForRecipe = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -60,7 +62,7 @@ export default function CreateRecipePage() {
 
       <div className="recipe-list mt-6">
         <div className="grid grid-cols-4 gap-4 pr-6 pl-6">
-          {recipes?.map((recipe: Recipe, index: any) => (
+          {recipes?.map((recipe: Recipe, index: number) => (
             <Cart index={index} key={index} recipe={recipe} />
           ))}
         </div>

@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Recipe } from "@/app/types";
+import { Recipe, RecipeState } from "@/app/types";
+import CustomInput from "../input/input";
 
 const schema = z.object({
   recipe_name: z
@@ -22,8 +23,12 @@ export function Cart({ recipe, index }: { recipe: Recipe; index: number }) {
   });
   const { register, handleSubmit, formState, setValue, clearErrors } = form;
   const [edit, setEdit] = useState(false);
-  const removeRecipe = useRecipeStore((state: any) => state.deleteRecipe);
-  const updateRecipe = useRecipeStore((state: any) => state.updateRecipe);
+  const removeRecipe = useRecipeStore(
+    (state: RecipeState) => state.deleteRecipe
+  );
+  const updateRecipe = useRecipeStore(
+    (state: RecipeState) => state.updateRecipe
+  );
   const { errors } = formState;
 
   const closeEditMode = () => {
@@ -69,12 +74,11 @@ export function Cart({ recipe, index }: { recipe: Recipe; index: number }) {
           <form onSubmit={handleSubmit(formSubmit)}>
             <div className="flex flex-col">
               <label>Recipe name</label>
-              <input
-                className="border-solid border-2 border-grey-600 rounded-2xl p-2"
-                placeholder="Enter recipe name..."
+              <CustomInput
+                register={register("recipe_name")}
+                name="recipe_name"
                 type="text"
-                id="recipe_name"
-                {...register("recipe_name")}
+                placeholder="Enter recipe name..."
               />
               <span style={{ color: "red", fontSize: "12px" }}>
                 {errors.recipe_name?.message}

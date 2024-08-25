@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 export const useRecipeStore = create(
-  persist(
+  persist<RecipeState>(
     (set) => ({
       recipes: [],
       originalRecipes: [],

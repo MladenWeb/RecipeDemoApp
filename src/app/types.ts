@@ -1,3 +1,5 @@
+import { UseFormProps } from "react-hook-form";
+
 export type Params = {
   [param: string]: string | string[] | undefined;
 };
@@ -32,5 +34,14 @@ export type RecipeState = {
   addRecipe: (data: Recipe) => void;
   deleteRecipe: (data: Recipe) => void;
   searchRecipe: (data: string) => void;
-  updateRecipe: (data: Recipe) => void;
+  updateRecipe: (data: Recipe, index: number) => void;
 };
+
+export type InputProps = {
+  register: UseFormProps;
+  name: string;
+  type: InputType;
+  placeholder: string;
+};
+
+export type InputType = "text" | "number" | "email" | "password";

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Recipe } from "@/app/types";
+import { Recipe, RecipeState } from "@/app/types";
 
 const schema = z.object({
   recipe_name: z
@@ -20,10 +20,10 @@ export default function RecipeModal({
   setModalStatus,
 }: {
   show: boolean;
-  setModalStatus: any;
+  setModalStatus: (value: boolean) => void;
 }) {
   const [loading, setLoading] = useState(false);
-  const addrecipe = useRecipeStore((state: any) => state?.addRecipe);
+  const addrecipe = useRecipeStore((state: RecipeState) => state?.addRecipe);
 
   const form = useForm<Recipe>({ resolver: zodResolver(schema) });
   const { register, handleSubmit, formState, reset, clearErrors } = form;

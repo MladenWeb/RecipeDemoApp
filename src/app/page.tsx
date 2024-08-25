@@ -1,4 +1,4 @@
-import { getData } from "@/api/recipe";
+import { getData } from "@/app/api/recipe";
 import { PageProps, RecipeData } from "./types";
 import Pagination from "@/components/pagination/pagination";
 
