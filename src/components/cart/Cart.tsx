@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Recipe, RecipeState } from "@/app/types";
-import CustomInput from "../input/input";
+import CustomInput from "../input/Input";
 
 const schema = z.object({
   recipe_name: z

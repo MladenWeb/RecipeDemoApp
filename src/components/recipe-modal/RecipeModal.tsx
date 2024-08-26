@@ -5,6 +5,7 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Recipe, RecipeState } from "@/app/types";
+import CustomInput from "../input/Input";
 
 const schema = z.object({
   recipe_name: z
@@ -56,12 +57,11 @@ export default function RecipeModal({
             <form onSubmit={handleSubmit(formSubmit)}>
               <div>
                 <label className={styles.label}>Recipe name</label>
-                <input
-                  placeholder="Enter recipe name..."
-                  className={styles.input_style}
+                <CustomInput
+                  register={register("recipe_name")}
+                  name="recipe_name"
                   type="text"
-                  id="recipe_name"
-                  {...register("recipe_name")}
+                  placeholder="Enter recipe name..."
                 />
                 <span className={styles.error}>
                   {errors.recipe_name?.message}
