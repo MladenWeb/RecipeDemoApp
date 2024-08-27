@@ -1,5 +1,6 @@
 "use client";
 import RecipeModal from "@/components/recipe-modal/RecipeModal";
+import { debounce } from "lodash";
 import { useRecipeStore } from "@/store/store";
 import { useState } from "react";
 import { Cart } from "@/components/cart/Cart";
@@ -13,11 +14,18 @@ export default function CreateRecipePage() {
     (state: RecipeState) => state.searchRecipe
   );
 
+  const debounceTime = debounce(
+    (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+      searchRecipe(event.target.value);
+    },
+    1000
+  );
+
   const searchForRecipe = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     setSearch(event.target.value);
-    searchRecipe(event.target.value);
+    debounceTime(event);
   };
   return (
     <div className="recipe_create_wrapper">
